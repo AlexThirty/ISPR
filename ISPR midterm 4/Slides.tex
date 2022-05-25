@@ -79,7 +79,7 @@
 
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
-\usepackage{etex}
+%\usepackage{etex}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
@@ -230,14 +230,14 @@
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[Calcolo di Malliavin per processi di Poisson]{Calcolo di Malliavin per processi di Poisson} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Automatic Goal Generation for RL]{Automatic Goal Generation for Reinforcement Learning Agents} % The short title appears at the bottom of every slide, the full title is only on the title page
 
-\author[Alessandro Trenta]{\emph{Alessandro Trenta} \\ {EDS e Applicazioni}} % Your name
+\author[Alessandro Trenta]{Alessandro Trenta - 566072} % Your name
 \institute[UniPi] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
-{Corso di Laurea Magistrale in Matematica \\ Università di Pisa % Your institution for the title page
+{ISPR - Dip. of Informatics \\ Università di Pisa % Your institution for the title page
 % Your email address
 }
-\date{} % Date, can be changed to a custom date
+\date{\today} % Date, can be changed to a custom date
 
 \begin{document}
 
@@ -246,6 +246,47 @@
 	\includegraphics[width=0.25\linewidth]{Logo/cherubino_pant541}
 \end{center}
 \titlepage % Print the title page as the first slide
+\end{frame}
+
+\begin{frame}
+	\frametitle{The problem}
+	\begin{itemize}
+		\item In general RL frameworks the main  objective is to find a policy $\pi(a_t|s_t)$ that maximizes the expected future return.
+		\item In this problem, instead of maximizing the return over a single reward function we want to analyze the situation in which we have a range of reward functions $r^g$ indexed with a goal $g\in\mathcal{G}$.
+  		\item A goal is defined as a set of states $\mathcal{S}^{g}\subset \mathcal{S}$. The reward function associated to this goal is
+			\begin{equation*}
+				r^{g}(s_t, a_t, s_{t+1}) = \mathds{1}\{s_{t+1} \in \mathcal{S}^{g}\}
+			\end{equation*}
+		\item We will consider $S^{g} = \{s\in \mathcal{S}: d(f(s), g)\leq \epsilon\}$ where $f$ projects the states in the goal space $\mathcal{G}$ and $d$ is a distance in this space.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{itemize}
+		\item Given $g$ we consider a Markov Decision Process that terminates whenever $s_t\in \mathcal{S}^g$. We then consider the return to be $R^g = \sum_{t=0}^{T}{r_t^g}$. This is actually a binary random variable and indicates whether the agent is able to reach a state close enough to the goal in at maximum $T$ time steps.
+		\item The policy is also $g$ dependent: $\pi(a_t|s_t,g)$ and the expected return for a goal is
+			\begin{align*}
+				R^g(\pi) = \E_{\pi(\cdot|s_t,g)}\left[\mathds{1}\{\exists t\in[1,\ldots, T]: s_t\in\mathcal{S}^g\right]\\
+				= \Pro\left(\exists t\in[1,\ldots, T]: s_t\in\mathcal{S}^g\right)
+			\end{align*}
+		\item We then assume to have a test distribution over goals $p_g$ so that out objective is to maximize the expected mean return over goals obtaining the policy
+			\begin{equation*}
+				\pi^{*}(a_t|s_t,g) = \argmax_{\pi}\E_{g\sim p_g(\cdot)}[R^g(\pi)]
+			\end{equation*}
+			which is indeed the average probability of success over all possible goals (w.r.t. $p_g$).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	Three main assumptions:
+	\begin{itemize}
+		\item A policy learned from enought goals in specific area of $\mathcal{G}$ can learn to interpolate well for other goals in this area.
+		\item A policy trained on some set of goals is a good initialization for other goals that are close enough.
+		\item If a goal is reachable, there is a policy that can reach it consistently.
+	\end{itemize}
+\end{frame}
+
+\nocite{AGG}
 
 \begin{frame}[allowframebreaks]
 	\frametitle{Bibliografia}
