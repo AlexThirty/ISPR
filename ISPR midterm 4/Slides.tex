@@ -1,0 +1,262 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass{beamer}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+%\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+\usetheme{Warsaw}
+%\beamertemplatenavigationsymbolsempty
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{etex}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{cite}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{mathrsfs,mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{braket}
+\usepackage{hyperref} % References become hyperlinks.
+\hypersetup{
+	%colorlinks = true,
+	linkcolor = {blue},
+	urlcolor = {red},
+	citecolor = {blue},
+	%pdfenconing=auto,
+}
+\usepackage{wrapfig}
+%\usepackage{arydshln}
+\usepackage{array}
+\usepackage[T1]{fontenc} 
+\usepackage{bm}
+\usepackage{multicol, multirow}
+\usepackage{grffile,pgf,tikz}
+\usepackage{verbatim}
+\usetikzlibrary{matrix}
+\usetikzlibrary{shapes.geometric,calc,arrows}
+\usepackage{wasysym}
+\usepackage{amssymb,xcolor,trimclip}
+%\usepackage{unicode-math}
+%\setmathfont{XITS Math}
+%\setmathfont[version=setB,StylisticSet=1]{XITS Math}
+\usepackage{dsfont}
+
+\theoremstyle{plain}
+\newtheorem{teo}{Teorema}
+%\newtheorem{lemma}[teo]{Lemma}
+\newtheorem{prop}[teo]{Proposizione}
+\newtheorem{post}{Postulato}
+\newtheorem{cor}[teo]{Corollario}
+
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definizione}
+\newtheorem{exmp}[defn]{Esempio}
+\newtheorem{oss}[defn]{Osservazione}
+\newtheorem{prob}{Problema}
+\newtheorem*{prob*}{Problema}
+\newtheorem{hint}{Indizio}
+\newtheorem*{notaz}{Notazione}
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\M}{\mathbb{M}}
+\newcommand{\LL}{\mathscr{L}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\SP}{\mathbb{S}}
+\newcommand{\dsum}{\displaystyle\sum}
+\newcommand{\dint}{\displaystyle\int}
+\newcommand{\scal}[2]{\langle #1,#2 \rangle}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\eval}[3]{\Big[ #1 \Big]_{#2}^{#3}}
+%\newcommand{\sob}[3]{W^{#1, #2}(#3)}
+%\newcommand{\sobzero}[3]{W_{0}^{#1, #2}(#3)}
+%\newcommand{\sobloc}[3]{W_{\text{loc}}^{#1, #2}(#3)}
+\newcommand{\weakconv}{\rightharpoonup}
+\newcommand{\weakconvs}{\overset{\ast}{\rightharpoonup}}
+
+
+\def\opendot{\mathbin{\clipbox{0pt 0pt .55ex 0pt}{$\odot$}}}
+
+\newcommand{\dx}{\text{d}x}
+\newcommand{\dt}{\text{d}t}
+\newcommand{\ds}{\text{d}s}
+\newcommand{\dy}{\text{d}y}
+\newcommand{\diff}{\text{d}}
+\newcommand{\dX}{\text{d}\bm{x}}
+\newcommand{\dFX}{\text{d}F(\bm{x})}
+\newcommand{\dfX}{\text{d}f(\bm{x})}
+\newcommand{\dFx}{\text{d}F(x)}
+\newcommand{\dfx}{\text{d}f(x)}
+\newcommand{\X}{\bm{X}}
+\newcommand{\x}{\bm{x}}
+\newcommand{\z}{\bm{z}}
+\newcommand{\B}{\bm{b}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\Pro}{\mathds{P}}
+\newcommand{\E}{\mathds{E}}
+\newcommand{\bh}{\hat{\bm{b}}}
+\newcommand{\Sh}{\hat{S}}
+\newcommand{\dmu}{\text{d}\mu(\B)}
+\newcommand{\Ph}{\hat{\mathbf{P}}}
+\newcommand{\HTens}{H^{\otimes n}}
+\newcommand{\HSimm}{H^{\odot n}}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Orb}{Orb}
+\DeclareMathOperator{\Stab}{Stab}
+\DeclareMathOperator{\Fix}{Fix}
+\DeclareMathOperator{\Ind}{Ind}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Imm}{Im}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\cof}{cof}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\dive}{div}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\Lip}{Lip}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\extr}{extr}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\divergence}{div}
+\DeclareMathOperator{\baric}{bar}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+
+%debug
+\newcommand{\avviso}[1]{{\textcolor{red}{\textbf{#1}}}}
+
+
+\newcommand\restr[2]{\ensuremath{\left.#1\right|_{#2}}}
+
+
+\newcommand{\boh}{\textcolor{red}{\Huge\textbf{???}}}
+\newcommand{\attenzione}{\textcolor{red}{\Huge\textbf{!!!}}}
+\newcommand{\vitali}{\textcolor{red}{\Huge\textbf{Vitali}}}
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Calcolo di Malliavin per processi di Poisson]{Calcolo di Malliavin per processi di Poisson} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author[Alessandro Trenta]{\emph{Alessandro Trenta} \\ {EDS e Applicazioni}} % Your name
+\institute[UniPi] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{Corso di Laurea Magistrale in Matematica \\ Università di Pisa % Your institution for the title page
+% Your email address
+}
+\date{} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}[plain]
+\begin{center}
+	\includegraphics[width=0.25\linewidth]{Logo/cherubino_pant541}
+\end{center}
+\titlepage % Print the title page as the first slide
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Bibliografia}
+	\bibliographystyle{alpha}
+	\bibliography{Bibliografia}
+\end{frame}
+
+\begin{frame}
+	\Huge{\centerline{Grazie per l'attenzione}}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
