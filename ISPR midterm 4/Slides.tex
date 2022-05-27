@@ -254,38 +254,30 @@
 \begin{frame}
 	\frametitle{The problem}
 	\begin{itemize}
-		\item In general RL frameworks the main  objective is to find a policy $\pi(a_t|s_t)$ that maximizes the expected future return.
-		\item In this problem, instead of maximizing the return over a single reward function we want to analyze the situation in which we have a range of reward functions $r^g$ indexed with a goal $g\in\mathcal{G}$.
-  		\item A goal is defined as a set of states $\mathcal{S}^{g}\subset \mathcal{S}$. The reward function associated to this goal is
+		\item In RL policy-based frameworks the main objective is to find a policy $\pi(a_t|s_t)$ that maximizes the expected future return.
+		\item Instead of maximizing the return over a single reward function we consider a range of reward functions $r^g$ indexed with a goal $g\in\mathcal{G}$.
+  		\item We will consider each goal $g$ a set of states $\mathcal{S}^{g}\subset \mathcal{S}$. The reward is $1$ when the goal is reached:
 			\begin{equation*}
 				r^{g}(s_t, a_t, s_{t+1}) = \mathds{1}\{s_{t+1} \in \mathcal{S}^{g}\}
 			\end{equation*}
-		\item We will consider $S^{g} = \{s\in \mathcal{S}: d(f(s), g)\leq \epsilon\}$ where $f$ projects the states in the goal space $\mathcal{G}$ and $d$ is a distance in this space.
+		\item Assume $S^{g} = \{s\in \mathcal{S}: d(f(s), g)\leq \epsilon\}$ where $f$ projects the states in the goal space $\mathcal{G}$ and $d$ is a distance in $\mathcal{G}$.
+		\item We are assuming that an agent who learned to reach some goals can learn to interpolate in between them, a policy that reaches a subset of $\mathcal{G}$ is a good initializer for goals nearby and that if $g$ is reachable there exist a policy that does it consistently.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
 	\begin{itemize}
-		\item Given $g$ we consider a Markov Decision Process that terminates whenever $s_t\in \mathcal{S}^g$. We then consider the return to be $R^g = \sum_{t=0}^{T}{r_t^g}$. This is actually a binary random variable and indicates whether the agent is able to reach a state close enough to the goal in at maximum $T$ time steps.
+		\item Given $g$ we consider a Markov Decision Process that terminates whenever $s_t\in \mathcal{S}^g$. Consider the return to be $R^g = \sum_{t=0}^{T}{r_t^g}$. This is a binary random variable that indicates whether the agent can reach a state close enough to the goal in at most $T$ time steps.
 		\item The policy is also $g$ dependent: $\pi(a_t|s_t,g)$ and the expected return for a goal is
 			\begin{align*}
 				R^g(\pi) = \E_{\pi(\cdot|s_t,g)}\left[\mathds{1}\{\exists t\in[1,\ldots, T]: s_t\in\mathcal{S}^g\right]\\
 				= \Pro\left(\exists t\in[1,\ldots, T]: s_t\in\mathcal{S}^g\right)
 			\end{align*}
-		\item We then assume to have a test distribution over goals $p_g$ so that out objective is to maximize the expected mean return over goals obtaining the policy
+		\item We then assume to have a test distribution over goals $p_g$. Our objective is to find the policy that maximizes the expected mean return over goals
 			\begin{equation*}
 				\pi^{*}(a_t|s_t,g) = \argmax_{\pi}\E_{g\sim p_g(\cdot)}[R^g(\pi)]
 			\end{equation*}
 			which is indeed the average probability of success over all possible goals (w.r.t. $p_g$).
-	\end{itemize}
-\end{frame}
-
-\begin{frame}
-	Three main assumptions:
-	\begin{itemize}
-		\item A policy learned from enought goals in specific area of $\mathcal{G}$ can learn to interpolate well for other goals in this area.
-		\item A policy trained on some set of goals is a good initialization for other goals that are close enough.
-		\item If a goal is reachable, there is a policy that can reach it consistently.
 	\end{itemize}
 \end{frame}
 
@@ -305,7 +297,7 @@
 
 \begin{frame}
 	\begin{itemize}
-		\item The goal GAN is responsible for one of the key parts of the model: generate new goals of the right difficulty for current iteration. The generator $G$ aims to generate goals $g$ from a noise vector $z\sim p_z(\cdot)$. The discriminator has to distinguish goals in $GOID_i$ from those that are not.
+		\item The goal GAN is responsible for one of the key parts of the model: generate new goals of the right difficulty for current iteration. The generator $G$ creates goals $g$ from noise vectors $z\sim p_z(\cdot)$. The discriminator has to distinguish which goals are in $GOID_i$.
 		\item The two losses are defined as:
 			\begin{align*}
 				\begin{split}
@@ -314,7 +306,7 @@
 					V(G) & = \E_{z\sim p_{z}(z)}\left[(D(G(z))-c)^2\right]
 				\end{split}
 			\end{align*}
-		\item We chooose $a=-1, b=1, c=0$ so that goals used for previous iteration steps $\sim p_{\text{data}}$ that are in $GOID_i$ (with $y_g=1$) have positive score $D(g)\mapsto 1$, while those too hard or too easy $y_g=0$ have negative scores $D(g)\mapsto -1$.
+		\item Put $a=-1, b=1, c=0$ so that goals used for previous iteration steps ($\sim p_{\text{data}}$) that are in $GOID_i$ (with $y_g=1$) have positive score $D(g)\mapsto 1$, while those too hard or too easy $y_g=0$ have negative scores $D(g)\mapsto -1$.
 		\item The last term in the discriminator loss is the usual discrimination term for data generated by the generator $G$. The $G$ loss let as usual the generator train to fool $D$.
 	\end{itemize}
 \end{frame}
@@ -323,11 +315,10 @@
 	\frametitle{The procedure}
 	The algorithmic procedure is the following: starting from an initial policy $\pi_0$ and an empty set of $\gold$ we iterate $N$ times this steps
 	\begin{itemize}
-		\item Start by sampling the noise vectors $z$ from $p_z(\cdot)$.
-		\item Generate the set of current goals $goals=G(z)\cup sample(\gold)$: $\frac{2}{3}$ are obtained by feeding the generator with $z$ and the other $\frac{1}{3}$ are sampled from the old goals we already trained on to avoid catastrophic forgetting.
+		\item Start by sampling the noise vectors $z$ from $p_z(\cdot)$. Use this to generate the set of current goals $goals=G(z)\cup sample(\gold)$: $\frac{2}{3}$ are generated from $G(z)$ while $\frac{1}{3}$ are sampled from the old goals we already trained on to avoid catastrophic forgetting.
 		\item Update the policy to $\pi_i$. This can be done with any RL policy based method (in this case a variant of TRPO). 
-		\item Calculate the empirical returns for each current goal w.r.t. the new policy $\pi_i$ and obtain their labels $y_g\in \{0,1\}$ based on its difficulty (or belonging to $GOID_i$). 
-		\item Train the GAN with the current goals (the $p_{\text{data}}$ above) and labels to be able to generate new goals with appropiate difficulty. Update the set $\gold$ with the new goals used for training this iteration.
+		\item Calculate the empirical returns for each current goal w.r.t. the new policy $\pi_i$ and obtain goal labels $y_g\in \{0,1\}$ based on its difficulty (its belonging to $GOID_i$). 
+		\item Train the GAN with the current goals and labels (the $p_{\text{data}}$ term above) to generate new goals with appropiate difficulty. Update the set $\gold$ with new goals at least $\epsilon$ distant from those already in $\gold$ (avoid concentration).
 	\end{itemize}
 \end{frame}
 
@@ -335,19 +326,29 @@
 	\frametitle{Experimental Results}
 	\begin{itemize}
 		\item The model was tested in $4$ main settings. An ant locomotor moving in a free bidimensional space and a U shaped maze, a single point mass moving in a single multi-path maze and in a $N$ dimensional setting with decreasing reachable states as $N\rightarrow\infty$.
-		\item In all cases the goals were points in the space that the agent has to reach within $\epsilon$ radius of precision in $T$ steps.
-		\item Models in which the current goals are sampled uniformly from $\mathcal{G}$ suffer from being trained on currently not reachable goals and performed worse than this model. Training on $GOID_i$ goals gives far better results.
-		\item The goal GAN samples new goals efficiently. In the free setting they cover circles of increasing radius on iterations while in the maze settings they follow the paths.
-		\item The percentage of newly generated goals that are in $GOAL_i$ is every iteration around $20\%$, giving the agent new goals to work on even as the policy improves. In the end the agent can reach with high success rate any given goal.
+		\item The goals were points in the space that the agent has to reach within $\epsilon$ radius of precision in $T$ steps.
+		\item Sampling goals uniformly from $\mathcal{G}$ suffers from training on currently not reachable goals. Training with $GOID_i$ goals as this model does gives far better results.
+		\item The goal GAN samples new goals efficiently. In the free setting they cover circles of increasing radius each iteration while in the maze settings they follow the paths.
+		\item The percentage of newly generated goals in $GOAL_i$ is every iteration around $20\%$, the agent always has new goals to work on even as the policy improves. In the end the agent can reach with high success rate any given goal.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
 	\begin{itemize}
 		\item To label a goal it is tested around $4$ times. This allows to choose $R_{\text{min}}\in(0,0.25), R_{\text{max}}\in(0.75,1)$ without significant performance changes.
-		\item To show the efficiency of the goal GAN the model was also tested against two goal selection models: in the first one the GAN is trained every goal attempted in last iteration, including the ones with $y_g=0$ (GAN fit all), the second samples uniformly in the set of feasible goals keeping only the ones in $GOID_i$ (oracle).
-		\item The first method performed worse as new goals are not based on current performance. The second one generates perfect goals but is much more inefficient as it has to label lots of goals every iteration. It gives un upper bound on performance. The main model is really close to it.
+		\item To show the efficiency of the goal GAN the model was also tested against two goal selection models: one where the GAN is trained every goal attempted in last iteration (even those with $y_g=0$), the second samples uniformly $\mathcal{G}$ keeping only the ones in $GOID_i$ (oracle).
+		\item The first method performed worse as new goals are not based on current performance. The second one generates perfect goals but is very inefficient as it has to label lots of goals every iteration but it gives un upper bound on performance. The main model is really close to it.
 		\item In the $N$ dimensional setting where the reachable area is $[-5,5]\times [-1,1]\times [-0.3,0.3]^{N-2}$ and gets narrower as $N$ increases (the goal has to be reached within $\epsilon_N=0.3\frac{\sqrt{N}}{\sqrt{2}}$) the model performs very close to the oracle one, while the others suffer a lot from the decreasing feasible area.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Final comments}
+	\begin{itemize}
+		\item This model provides an easy extension to multi-reward models which works naturally and efficiently with good resutls and it's formulated in a general way that doesn't need too much specifications.
+		\item In all the experiments, an agent has to move in space and reach goals that are points in the space itself which is one of the simplest settings for the problem. In this case the definition of $\mathcal{G},\mathcal{S}^g, f(s_t), d(\cdot,\cdot)$ are trivial and the model works almost perfectly.
+		\item If goals are not "physical" points in space to reach but instead more complicated and abstract objectives which require peculiar definitions of $f$ and $d$ I'm not convinced enouth that this model can generalize easily.
+		\item It has still to be seen whether this model can generalize easily on settings where goals are of different kind: (e.g. pick an object and move it around or do actions with it).
 	\end{itemize}
 \end{frame}
 
