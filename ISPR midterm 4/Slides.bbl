@@ -1,7 +1,7 @@
-\begin{thebibliography}{FHGA17}
+\begin{thebibliography}{FHGA}
 
-\bibitem[FHGA17]{AGG}
+\bibitem[FHGA]{AGG}
 Carlos Florensa, David Held, Xinyang Geng, and Pieter Abbeel.
-\newblock Automatic goal generation for reinforcement learning agents, 2017.
+\newblock Automatic goal generation for reinforcement learning agents.
 
 \end{thebibliography}
